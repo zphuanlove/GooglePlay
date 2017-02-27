@@ -1,14 +1,19 @@
 package com.itheima_zphuan.googleplay;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.socks.library.KLog;
+import com.astuetz.PagerSlidingTabStrip;
+import com.itheima_zphuan.googleplay.factory.FragmentFactory;
+import com.itheima_zphuan.googleplay.utils.UIUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,8 +22,13 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.main_drawerLayout)
     DrawerLayout mainDrawerLayout;
+    @BindView(R.id.main_tabs)
+    PagerSlidingTabStrip mainTabs;
+    @BindView(R.id.main_viewpager)
+    ViewPager mainViewpager;
 
     private ActionBarDrawerToggle toggle;
+    private String[] mMainTitles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initActionBar();
         initActionBarDrawerToggle();
+        initData();
     }
 
     private void initActionBar() {
@@ -51,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
      * 初始化ActionBarDrawerToggle
      */
     private void initActionBarDrawerToggle() {
-        toggle = new ActionBarDrawerToggle(this,mainDrawerLayout, R.string.open,R.string.close);
+        toggle = new ActionBarDrawerToggle(this, mainDrawerLayout, R.string.open, R.string.close);
         //同步状态方法-->替换默认回退部分的UI效果
         toggle.syncState();
         //设置drawerLayout的监听 --> DrawerLayout拖动的时候,toggle可以跟着改变ui
@@ -71,6 +82,52 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initData() {
+        //模拟数据集
+        mMainTitles = UIUtils.getStrings(R.array.main_titles);
+
+        //为viewPager设置适配器
+        MainFragmentPagerAdapter adapter = new MainFragmentPagerAdapter(getSupportFragmentManager());
+        mainViewpager.setAdapter(adapter);
+
+        // Bind the tabs to the ViewPager 绑定SlidingTab和ViewPager
+        mainTabs.setViewPager(mainViewpager);
+    }
+
+    /*
+      PagerAdapter-->View
+      FragmentStatePagerAdapter-->Fragment
+      FragmentPagerAdapter-->Fragment
+     */
+    class MainFragmentPagerAdapter extends FragmentPagerAdapter {
+
+        public MainFragmentPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {//决定ViewPager页数的总和
+            Fragment fragment = FragmentFactory.createFragment(position);
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            if(null!=mMainTitles){
+                return mMainTitles.length;
+            }
+            return 0;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            if(null!=mMainTitles){
+                return mMainTitles[position];
+            }
+            return super.getPageTitle(position);
+        }
     }
 
 }
