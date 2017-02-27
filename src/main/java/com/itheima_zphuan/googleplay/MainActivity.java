@@ -11,9 +11,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.astuetz.PagerSlidingTabStrip;
+import com.astuetz.PagerSlidingTabStripExtends;
 import com.itheima_zphuan.googleplay.factory.FragmentFactory;
 import com.itheima_zphuan.googleplay.utils.UIUtils;
+import com.socks.library.KLog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.main_drawerLayout)
     DrawerLayout mainDrawerLayout;
     @BindView(R.id.main_tabs)
-    PagerSlidingTabStrip mainTabs;
+    PagerSlidingTabStripExtends mainTabs;
     @BindView(R.id.main_viewpager)
     ViewPager mainViewpager;
 
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
       FragmentStatePagerAdapter-->Fragment
       FragmentPagerAdapter-->Fragment
      */
-    class MainFragmentPagerAdapter extends FragmentPagerAdapter {
+    class MainFragmentPagerAdapter extends FragmentPagerAdapter{
 
         public MainFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -109,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {//决定ViewPager页数的总和
+            KLog.d("创建了-->"+mMainTitles[position]);
             Fragment fragment = FragmentFactory.createFragment(position);
             return fragment;
         }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:itheima="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -24,10 +25,16 @@
         android:orientation="vertical">
 
         <!--PagerSlidingTabStrp-->
-        <com.astuetz.PagerSlidingTabStrip
+        <com.astuetz.PagerSlidingTabStripExtends
             android:id="@+id/main_tabs"
             android:layout_width="match_parent"
-            android:layout_height="48dp"/>
+            android:layout_height="48dp"
+            itheima:pstsIndicatorColor="@color/tab_indicator_selected"
+            itheima:pstsSelectedTabTextColor="@color/tab_text_selected"
+            itheima:pstsSelectedTabTextSize="18sp"
+            itheima:pstsTabTextColor="@color/tab_text_normal"
+            itheima:pstsTabTextSize="16sp"
+            />
 
         <!--ViewPager-->
         <android.support.v4.view.ViewPager
