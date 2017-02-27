@@ -11,9 +11,9 @@ import com.itheima_zphuan.googleplay.utils.UIUtils;
  * author: 钟佩桓
  * date: 2017/2/27
  * des:
- *      1.提供视图-->4种视图中的一种(加载中视图,错误视图,空视图,成功视图)-->把自身提供出去就可以
- *      2.加载数据
- *      3.数据和视图的绑定
+ * 1.提供视图-->4种视图中的一种(加载中视图,错误视图,空视图,成功视图)-->把自身提供出去就可以
+ * 2.加载数据
+ * 3.数据和视图的绑定
  */
 public abstract class LoadingPager extends FrameLayout {
 
@@ -83,15 +83,15 @@ public abstract class LoadingPager extends FrameLayout {
             mEmptyView.setVisibility(View.GONE);
         }
         //这里就可能有成功视图了.因为数据已经加载完成了.而且数据加载成功了
-        if(mSuccessView == null && mCurState == STATE_SUCCESS){
+        if (mSuccessView == null && mCurState == STATE_SUCCESS) {
             mSuccessView = initSuccessView();
             this.addView(mSuccessView);
         }
         // 控制 成功视图的 显示隐藏
-        if(mSuccessView!=null){
-            if(mCurState == STATE_SUCCESS){
+        if (mSuccessView != null) {
+            if (mCurState == STATE_SUCCESS) {
                 mSuccessView.setVisibility(VISIBLE);
-            }else{
+            } else {
                 mSuccessView.setVisibility(GONE);
             }
         }
@@ -103,7 +103,7 @@ public abstract class LoadingPager extends FrameLayout {
      * @des 触发加载数据
      * @called 外界想让LoadingPager触发加载数据的时候调用
      */
-    public void triggerLoadData(){
+    public void triggerLoadData() {
         new Thread(new LoadDataTask()).start();
     }
 
@@ -112,13 +112,18 @@ public abstract class LoadingPager extends FrameLayout {
         @Override
         public void run() {
             //真正的在子线程中加载具体的数据-->得到数据
-            int tempState = initData();
+            LoadedResult loadedResult = initData();
 
             //处理数据
-            mCurState = tempState;
+            mCurState = loadedResult.getState();
 
-            // 刷新UI(决定到底提供4种视图中的哪一种视图)
-            refreshViewByState();//mCurState-->Int
+            MyApplication.getMainThreadHandler().post(new Runnable() {
+                @Override
+                public void run() {
+                    // 刷新UI(决定到底提供4种视图中的哪一种视图)
+                    refreshViewByState();//mCurState-->Int
+                }
+            });
 
         }
     }
@@ -130,7 +135,7 @@ public abstract class LoadingPager extends FrameLayout {
      * @called triggerLoadData()方法被调用的时候
      */
 
-    public abstract int initData();
+    public abstract LoadedResult initData();
 
     /**
      * @return
@@ -141,4 +146,27 @@ public abstract class LoadingPager extends FrameLayout {
      * @called triggerLoadData()方法被调用, 而且数据加载完成了, 而且数据加载成功
      */
     protected abstract View initSuccessView();
+
+    /**
+     *  标识数据加载结果的枚举类
+     */
+    public enum LoadedResult {
+        /**
+         * STATE_ERROR = 1;//错误
+         * STATE_SUCCESS = 2;//成功
+         * STATE_EMPTY = 3;//空
+         */
+        SUCCESS(STATE_SUCCESS), ERROR(STATE_ERROR), EMPTY(STATE_EMPTY);
+
+        private int state;
+
+        public int getState() {
+            return state;
+        }
+
+        LoadedResult(int state) {
+            this.state = state;
+        }
+    }
+
 }

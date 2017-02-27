@@ -1,26 +1,35 @@
 package com.itheima_zphuan.googleplay.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.graphics.Color;
+import android.os.SystemClock;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.itheima_zphuan.googleplay.utils.UIUtils;
+import com.itheima_zphuan.googleplay.base.BaseFragment;
+import com.itheima_zphuan.googleplay.base.LoadingPager;
 
 /**
  * author: 钟佩桓
  * date: 2017/2/27
  */
-public class HomeFragment extends android.support.v4.app.Fragment {
-    @Nullable
+public class HomeFragment extends BaseFragment {
+
+    /**
+     * @des 在子线程中真正的加载具体的数据
+     * @called triggerLoadData()方法被调用的时候
+     */
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        TextView tv = new TextView(UIUtils.getContext());
-        tv.setGravity(Gravity.CENTER);
-        tv.setText(this.getClass().getSimpleName());//"HomeFragment"
-        return tv;
+    public LoadingPager.LoadedResult initData() {
+        SystemClock.sleep(2000);//模拟耗时的网络请求
+        return LoadingPager.LoadedResult.SUCCESS;
+    }
+
+    @Override
+    public View initSuccessView() {
+        TextView successView = new TextView(getActivity());
+        successView.setText("HomeFragment");
+        successView.setTextColor(Color.RED);
+        return successView;
+
     }
 }
