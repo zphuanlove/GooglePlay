@@ -3,7 +3,7 @@ package com.itheima_zphuan.googleplay;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
       FragmentStatePagerAdapter-->Fragment
       FragmentPagerAdapter-->Fragment
      */
-    class MainFragmentPagerAdapter extends FragmentPagerAdapter{
+    class MainFragmentPagerAdapter extends FragmentStatePagerAdapter{
 
         public MainFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
