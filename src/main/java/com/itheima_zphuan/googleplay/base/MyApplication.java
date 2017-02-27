@@ -35,6 +35,7 @@ public class MyApplication extends Application{
         mMainThreadId = android.os.Process.myTid();
 
         KLog.init(com.itheima_zphuan.googleplay.conf.BuildConfig.LOG_DEBUG,"zph");
+        System.out.println("---------myapplication create ------");
     }
 
     public static Context getContext(){
