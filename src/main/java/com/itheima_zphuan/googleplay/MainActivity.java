@@ -48,6 +48,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * 初始化ActionBarDrawerToggle
+     */
+    private void initActionBarDrawerToggle() {
+        toggle = new ActionBarDrawerToggle(this,mainDrawerLayout, R.string.open,R.string.close);
+        //同步状态方法-->替换默认回退部分的UI效果
+        toggle.syncState();
+        //设置drawerLayout的监听 --> DrawerLayout拖动的时候,toggle可以跟着改变ui
+        mainDrawerLayout.setDrawerListener(toggle);
+    }
+
+    /**
      * 点击ActionBar的home按钮会执行该方法，所以在该方法中做判断
      */
     @Override
@@ -62,14 +73,4 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * 初始化ActionBarDrawerToggle
-     */
-    private void initActionBarDrawerToggle() {
-        toggle = new ActionBarDrawerToggle(this,mainDrawerLayout, R.string.open,R.string.close);
-        //同步状态方法-->替换默认回退部分的UI效果
-        toggle.syncState();
-        //设置drawerLayout的监听 --> DrawerLayout拖动的时候,toggle可以跟着改变ui
-        mainDrawerLayout.setDrawerListener(toggle);
-    }
 }
