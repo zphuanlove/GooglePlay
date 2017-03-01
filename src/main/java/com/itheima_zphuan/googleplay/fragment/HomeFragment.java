@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.itheima_zphuan.googleplay.base.BaseFragment;
 import com.itheima_zphuan.googleplay.base.LoadingPager;
+import com.itheima_zphuan.googleplay.utils.UIUtils;
 
 /**
  * author: 钟佩桓
@@ -26,7 +27,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public View initSuccessView() {
-        TextView successView = new TextView(getActivity());
+        TextView successView = new TextView(UIUtils.getContext());
         successView.setText("HomeFragment");
         successView.setTextColor(Color.RED);
         return successView;

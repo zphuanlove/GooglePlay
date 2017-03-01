@@ -5,7 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
-import com.socks.klog.BuildConfig;
 import com.socks.library.KLog;
 
 /**

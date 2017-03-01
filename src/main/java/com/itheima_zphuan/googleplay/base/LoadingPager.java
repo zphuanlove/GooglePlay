@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.itheima_zphuan.googleplay.R;
+import com.itheima_zphuan.googleplay.utils.LogUtils;
 import com.itheima_zphuan.googleplay.utils.UIUtils;
 
 /**
@@ -12,7 +13,7 @@ import com.itheima_zphuan.googleplay.utils.UIUtils;
  * date: 2017/2/27
  * des:
  * 1.提供视图-->4种视图中的一种(加载中视图,错误视图,空视图,成功视图)-->把自身提供出去就可以
- * 2.加载数据
+ * 2.加载数据-->网络请求--请求失败，成功
  * 3.数据和视图的绑定
  */
 public abstract class LoadingPager extends FrameLayout {
@@ -27,6 +28,7 @@ public abstract class LoadingPager extends FrameLayout {
     private View mErrorView;
     private View mEmptyView;
     private View mSuccessView;
+    private LoadDataTask mLoadDataTask;
 
     public LoadingPager(Context context) {
         super(context);
@@ -46,6 +48,16 @@ public abstract class LoadingPager extends FrameLayout {
         //错误视图
         mErrorView = View.inflate(UIUtils.getContext(), R.layout.pager_error, null);
         this.addView(mErrorView);
+
+        //找到错误视图里面重试按钮,设置点击事件
+        mErrorView.findViewById(R.id.error_btn_retry).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //重新触发加载数据
+                triggerLoadData();
+            }
+        });
+
 
         //空视图
         mEmptyView = View.inflate(UIUtils.getContext(), R.layout.pager_empty, null);
@@ -104,7 +116,18 @@ public abstract class LoadingPager extends FrameLayout {
      * @called 外界想让LoadingPager触发加载数据的时候调用
      */
     public void triggerLoadData() {
-        new Thread(new LoadDataTask()).start();
+        // 若当前已经加载成功，则无需再次加载
+        if (mCurState != STATE_SUCCESS) {
+            if (mLoadDataTask == null) {
+                LogUtils.s("###触发加载数据triggerLoadData");
+                //控制数据加载之前显示加载中的视图
+                mCurState = STATE_LOADING;
+                refreshViewByState();
+                // 2.异步加载
+                mLoadDataTask = new LoadDataTask();
+                new Thread(mLoadDataTask).start();
+            }
+        }
     }
 
 
@@ -124,7 +147,8 @@ public abstract class LoadingPager extends FrameLayout {
                     refreshViewByState();//mCurState-->Int
                 }
             });
-
+            //置空任务
+            mLoadDataTask = null;
         }
     }
 

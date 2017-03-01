@@ -1,7 +1,6 @@
 package com.itheima_zphuan.googleplay.factory;
 
-import android.support.v4.app.Fragment;
-
+import com.itheima_zphuan.googleplay.base.BaseFragment;
 import com.itheima_zphuan.googleplay.fragment.AppFragment;
 import com.itheima_zphuan.googleplay.fragment.CategoryFragment;
 import com.itheima_zphuan.googleplay.fragment.GameFragment;
@@ -9,6 +8,10 @@ import com.itheima_zphuan.googleplay.fragment.HomeFragment;
 import com.itheima_zphuan.googleplay.fragment.HotFragment;
 import com.itheima_zphuan.googleplay.fragment.RecommendFragment;
 import com.itheima_zphuan.googleplay.fragment.SubjectFragment;
+import com.socks.library.KLog;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * author: 钟佩桓
@@ -24,9 +27,20 @@ public class FragmentFactory {
     public static final int FRAGMENT_CATEGORY = 5;//分类
     public static final int FRAGMENT_HOT = 6;//排行
 
-    public static Fragment createFragment(int position) {
+    /** 用于缓存Fragment的实例 */
+    public static Map<Integer, BaseFragment> mCacheFragments = new HashMap<>();
+
+    public static BaseFragment createFragment(int position) {
         //定义Fragment对象
-        Fragment fragment = null;
+        BaseFragment fragment = null;
+
+        //优先缓存集合中取出来
+        if (mCacheFragments.containsKey(position)) {
+            fragment = mCacheFragments.get(position);
+            KLog.i("有缓存对象fragment，不再创建fragment--"+position);
+            return fragment;
+        }
+
 
         switch (position) {
             case FRAGMENT_HOME://返回 首页 对应的fragment
@@ -54,6 +68,7 @@ public class FragmentFactory {
             default:
                 break;
         }
+        mCacheFragments.put(position,fragment);
         return fragment;
     }
 }

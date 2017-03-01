@@ -12,11 +12,11 @@
         android:layout_gravity="left"
         android:background="#0f0" />
     <!-- 当然，你也可以声明多个Menu布局，比如下面这个从右边划出的Menu -->
-    <FrameLayout
-        android:layout_width="200dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="right"
-        android:background="#00f" />
+    <!--<FrameLayout-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="right"-->
+        <!--android:background="#00f" />-->
 
     <!--内容区域-->
     <LinearLayout

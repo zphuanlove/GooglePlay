@@ -8,17 +8,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.itheima_zphuan.googleplay.utils.UIUtils;
+import com.socks.library.KLog;
 
 /**
  * author: 钟佩桓
  * date: 2017/2/28
+ * 当前这个类 展示界面的类
+ * 抓住本质 关键点  ---return view---->controller---提供四种试图
  */
 public abstract class BaseFragment extends Fragment {
+
+    private LoadingPager mLoadingPager;
+
+    public LoadingPager getLoadingPager() {
+        return mLoadingPager;
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LoadingPager loadingPager = new LoadingPager(UIUtils.getContext()) {
+        KLog.e("onCreateView");
+        mLoadingPager = new LoadingPager(UIUtils.getContext()) {
             /**
              * @des 在子线程中真正的加载具体的数据
              * @called triggerLoadData()方法被调用的时候
@@ -41,10 +51,10 @@ public abstract class BaseFragment extends Fragment {
         };
 
         //触发加载数据
-        loadingPager.triggerLoadData();
+//        mLoadingPager.triggerLoadData();
 
         //4种视图中的一种(加载中,错误,空,成功)
-        return loadingPager;
+        return mLoadingPager;
     }
 
     /**
