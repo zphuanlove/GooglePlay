@@ -4,12 +4,11 @@ import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.itheima_zphuan.googleplay.R;
 import com.itheima_zphuan.googleplay.adapter.MyBaseAdapter;
 import com.itheima_zphuan.googleplay.base.BaseFragment;
 import com.itheima_zphuan.googleplay.base.LoadingPager;
+import com.itheima_zphuan.googleplay.holder.HomeHolder;
 import com.itheima_zphuan.googleplay.utils.UIUtils;
 
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ import java.util.List;
 public class HomeFragment extends BaseFragment {
 
     private List<String> mDatas;
+
     /**
      * @des 在子线程中真正的加载具体的数据
      * @called triggerLoadData()方法被调用的时候
@@ -47,7 +47,7 @@ public class HomeFragment extends BaseFragment {
         return listView;
     }
 
-    class HomeAdapter extends MyBaseAdapter<String>{
+    class HomeAdapter extends MyBaseAdapter<String> {
 
         protected HomeAdapter(List<String> dataSets) {
             super(dataSets);
@@ -55,31 +55,20 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-              /*--------------- 决定根布局(itemView) ---------------*/
-            ViewHolder holder = null;
+            /*--------------- 决定根布局(itemView) ---------------*/
+            HomeHolder holder;
             if (convertView == null) {
-                holder = new ViewHolder();
-                convertView = View.inflate(UIUtils.getContext(), R.layout.item_temp, null);
-                holder.mTvTmp1 = (TextView) convertView.findViewById(R.id.tmp_tv_1);
-                holder.mTvTmp2 = (TextView) convertView.findViewById(R.id.tmp_tv_2);
-                convertView.setTag(holder);
+                holder = new HomeHolder();
             } else {
-                holder = (ViewHolder) convertView.getTag();
+                holder = (HomeHolder) convertView.getTag();
             }
             /*--------------- 得到数据,然后绑定数据 ---------------*/
             //data
             String data = mDatas.get(position);
             //view-->在holder对象中
             //data+view
-            holder.mTvTmp1.setText("我是头-" + data);
-            holder.mTvTmp2.setText("我是尾巴-" + data);
-            return convertView;
+            holder.setDataAndRefreshHolderView(data);
+            return holder.mHolderView;
         }
-
-        class ViewHolder {
-            TextView mTvTmp1;
-            TextView mTvTmp2;
-        }
-
     }
 }
