@@ -11,7 +11,7 @@ import java.util.List;
  */
 public abstract class MyBaseAdapter<T> extends BaseAdapter {
 
-    private List<T> mDataSets;
+    protected List<T> mDataSets;
 
     protected MyBaseAdapter(List<T> dataSets) {
         mDataSets = dataSets;

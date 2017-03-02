@@ -2,12 +2,12 @@ package com.itheima_zphuan.googleplay.fragment;
 
 import android.os.SystemClock;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.itheima_zphuan.googleplay.adapter.MyBaseAdapter;
 import com.itheima_zphuan.googleplay.base.BaseFragment;
+import com.itheima_zphuan.googleplay.base.BaseHolder;
 import com.itheima_zphuan.googleplay.base.LoadingPager;
+import com.itheima_zphuan.googleplay.base.SuperBaseAdapter;
 import com.itheima_zphuan.googleplay.holder.HomeHolder;
 import com.itheima_zphuan.googleplay.utils.UIUtils;
 
@@ -47,28 +47,19 @@ public class HomeFragment extends BaseFragment {
         return listView;
     }
 
-    class HomeAdapter extends MyBaseAdapter<String> {
+    /**
+     * @return
+     * @des 得到BaseHolder具体的子类对象
+     */
+    class HomeAdapter extends SuperBaseAdapter<String> {
 
         protected HomeAdapter(List<String> dataSets) {
             super(dataSets);
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            /*--------------- 决定根布局(itemView) ---------------*/
-            HomeHolder holder;
-            if (convertView == null) {
-                holder = new HomeHolder();
-            } else {
-                holder = (HomeHolder) convertView.getTag();
-            }
-            /*--------------- 得到数据,然后绑定数据 ---------------*/
-            //data
-            String data = mDatas.get(position);
-            //view-->在holder对象中
-            //data+view
-            holder.setDataAndRefreshHolderView(data);
-            return holder.mHolderView;
+        public BaseHolder getSpecialBaseHolder() {
+            return new HomeHolder();
         }
     }
 }
