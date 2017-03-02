@@ -1,11 +1,18 @@
 package com.itheima_zphuan.googleplay.holder;
 
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.itheima_zphuan.googleplay.R;
 import com.itheima_zphuan.googleplay.base.BaseHolder;
+import com.itheima_zphuan.googleplay.bean.ItemBean;
+import com.itheima_zphuan.googleplay.utils.StringUtils;
 import com.itheima_zphuan.googleplay.utils.UIUtils;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * author: 钟佩桓
@@ -15,11 +22,19 @@ import com.itheima_zphuan.googleplay.utils.UIUtils;
  * 2.接收数据
  * 3.数据和视图的绑定
  */
-public class HomeHolder extends BaseHolder<String>{
+public class HomeHolder extends BaseHolder<ItemBean> {
 
 
-    private TextView mTvTmp1;
-    private TextView mTvTmp2;
+    @BindView(R.id.item_appinfo_iv_icon)
+    ImageView mItemAppinfoIvIcon;
+    @BindView(R.id.item_appinfo_tv_title)
+    TextView mItemAppinfoTvTitle;
+    @BindView(R.id.item_appinfo_rb_stars)
+    RatingBar mItemAppinfoRbStars;
+    @BindView(R.id.item_appinfo_tv_size)
+    TextView mItemAppinfoTvSize;
+    @BindView(R.id.item_appinfo_tv_des)
+    TextView mItemAppinfoTvDes;
 
     /**
      * @return
@@ -28,10 +43,8 @@ public class HomeHolder extends BaseHolder<String>{
      */
     @Override
     public View initHolderView() {
-        View itemView = View.inflate(UIUtils.getContext(), R.layout.item_temp, null);
-        //初始化孩子对象
-        mTvTmp1 = (TextView) itemView.findViewById(R.id.tmp_tv_1);
-        mTvTmp2 = (TextView) itemView.findViewById(R.id.tmp_tv_2);
+        View itemView = View.inflate(UIUtils.getContext(), R.layout.item_home, null);
+        ButterKnife.bind(this,itemView);
         return itemView;
     }
 
@@ -40,11 +53,14 @@ public class HomeHolder extends BaseHolder<String>{
      * @des 数据和视图的绑定操作
      */
     @Override
-    public void refreshHolderView(String data) {
+    public void refreshHolderView(ItemBean data) {
         //view-->成员变量
         //data-->局部变量,基类还有
         //data+view
-        mTvTmp1.setText("我是头-" + data);
-        mTvTmp2.setText("我是尾巴-" + data);
+        mItemAppinfoTvTitle.setText(data.name);
+        mItemAppinfoTvSize.setText(StringUtils.formatFileSize(data.size));
+        mItemAppinfoTvDes.setText(data.des);
+        //ratingbar
+        mItemAppinfoRbStars.setRating(data.stars);
     }
 }

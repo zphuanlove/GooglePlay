@@ -12,4 +12,8 @@ public class Constants {
    LogUtils.LEVEL_OFF:关闭日志(屏蔽所有的日志输出)
     */
     public static final int DEBUGLEVEL = LogUtils.LEVEL_ALL;
+    public static final class URLS {
+        public static final String BASEURL = "http://10.0.2.2:8080/GooglePlayServer/";
+        public static final String IMGBASEURL = BASEURL + "image?name=";
+    }
 }

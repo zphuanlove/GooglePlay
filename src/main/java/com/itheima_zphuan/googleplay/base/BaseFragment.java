@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.itheima_zphuan.googleplay.utils.UIUtils;
-import com.socks.library.KLog;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * author: 钟佩桓
@@ -27,7 +29,6 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        KLog.e("onCreateView");
         mLoadingPager = new LoadingPager(UIUtils.getContext()) {
             /**
              * @des 在子线程中真正的加载具体的数据
@@ -74,4 +75,26 @@ public abstract class BaseFragment extends Fragment {
      * @called triggerLoadData()方法被调用, 而且数据加载完成了, 而且数据加载成功
      */
     public abstract View initSuccessView();
+
+    /**
+     * @des 校验请求回来的数据
+     */
+    public LoadingPager.LoadedResult checkResult(Object resObj) {
+        if (resObj == null) {
+            return LoadingPager.LoadedResult.EMPTY;
+        }
+        //resObj -->List
+        if (resObj instanceof List) {
+            if (((List) resObj).size() == 0) {
+                return LoadingPager.LoadedResult.EMPTY;
+            }
+        }
+        //resObj -->Map
+        if (resObj instanceof Map) {
+            if (((Map) resObj).size() == 0) {
+                return LoadingPager.LoadedResult.EMPTY;
+            }
+        }
+        return LoadingPager.LoadedResult.SUCCESS;
+    }
 }
