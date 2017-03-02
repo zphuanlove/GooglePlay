@@ -32,13 +32,17 @@ public class ThreadPoolProxy {
         //isShutDown当调用shutdown()方法后返回为true。
         //isTerminated当调用shutdown()方法后，并且所有提交的任务完成后返回为true
         if (mExecutor == null || mExecutor.isShutdown() || mExecutor.isTerminated()) {
-            long keepAliveTime = 0;//额外线程的空闲时间
-            TimeUnit unit = TimeUnit.MILLISECONDS;
-            BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue();//无界队列
-            //当添加任务出错时的策略捕获器，如果出现错误，不做处理
-            RejectedExecutionHandler handler = new ThreadPoolExecutor.DiscardPolicy();
-            mExecutor = new ThreadPoolExecutor(mCorePoolSize, mMaximumPoolSize, keepAliveTime,
-                    unit, workQueue, handler);
+            synchronized (ThreadPoolProxy.class) {
+                if (mExecutor == null || mExecutor.isShutdown() || mExecutor.isTerminated()) {
+                    long keepAliveTime = 0;//额外线程的空闲时间
+                    TimeUnit unit = TimeUnit.MILLISECONDS;
+                    BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue();//无界队列
+                    //当添加任务出错时的策略捕获器，如果出现错误，不做处理
+                    RejectedExecutionHandler handler = new ThreadPoolExecutor.DiscardPolicy();
+                    mExecutor = new ThreadPoolExecutor(mCorePoolSize, mMaximumPoolSize, keepAliveTime,
+                            unit, workQueue, handler);
+                }
+            }
         }
     }
 
