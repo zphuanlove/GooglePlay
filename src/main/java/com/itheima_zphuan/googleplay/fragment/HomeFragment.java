@@ -46,6 +46,7 @@ public class HomeFragment extends BaseFragment {
         listView.setAdapter(new HomeAdapter(mDatas));
         return listView;
     }
+
     class HomeAdapter extends MyBaseAdapter<String>{
 
         protected HomeAdapter(List<String> dataSets) {
