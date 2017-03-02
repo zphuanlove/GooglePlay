@@ -48,6 +48,7 @@ public class ThreadPoolProxy {
 
     /**
      * 提交任务
+     * des:返回一个Future作为返回值，如果线程任务运行期间出现异常，会被捕获，不会直接抛异常造成程序崩溃
      * @param task
      */
     public void submit(Runnable task){
@@ -57,6 +58,7 @@ public class ThreadPoolProxy {
 
     /**
      * 执行任务
+     * des:没有返回值，如果线程任务运行期间出现异常，直接抛异常，程序崩溃
      * @param task
      */
     public void execute(Runnable task){
