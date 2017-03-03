@@ -64,6 +64,8 @@ public class HomeFragment extends BaseFragment {
                 /************Json解析*************/
                 Gson gson = new Gson();
                 HomeBean homeBean = gson.fromJson(resJsonString, HomeBean.class);
+
+
                 LoadingPager.LoadedResult result = checkResult(homeBean);
                 if (result != LoadingPager.LoadedResult.SUCCESS) {//说明homeBean有问题,homeBean==null
                     return result;

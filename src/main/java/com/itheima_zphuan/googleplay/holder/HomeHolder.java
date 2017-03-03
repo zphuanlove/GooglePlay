@@ -8,8 +8,10 @@ import android.widget.TextView;
 import com.itheima_zphuan.googleplay.R;
 import com.itheima_zphuan.googleplay.base.BaseHolder;
 import com.itheima_zphuan.googleplay.bean.ItemBean;
+import com.itheima_zphuan.googleplay.conf.Constants;
 import com.itheima_zphuan.googleplay.utils.StringUtils;
 import com.itheima_zphuan.googleplay.utils.UIUtils;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,5 +64,9 @@ public class HomeHolder extends BaseHolder<ItemBean> {
         mItemAppinfoTvDes.setText(data.des);
         //ratingbar
         mItemAppinfoRbStars.setRating(data.stars);
+        //图片加载
+        //http://localhost:8080/GooglePlayServer/image?name=
+        String url = Constants.URLS.IMGBASEURL + data.iconUrl;
+        Picasso.with(UIUtils.getContext()).load(url).into(mItemAppinfoIvIcon);
     }
 }

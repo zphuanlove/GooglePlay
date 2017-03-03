@@ -36,11 +36,15 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.2.0'
     testCompile 'junit:junit:4.12'
     compile 'com.github.zhaokaiqiang.klog:library:1.5.0'
-    /************ButterKnife*************/
+    /*--------------ButterKnife--------------*/
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    /************OkHttp*************/
+    /*--------------OkHttp--------------*/
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    /*--------------PagerSlidingTabStrip--------------*/
     compile project(':PagerSlidingTabStrip_Lib')
+    /*--------------gson--------------*/
     compile files('libs/gson-2.2.3.jar')
+    /*--------------picasso--------------*/
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }
