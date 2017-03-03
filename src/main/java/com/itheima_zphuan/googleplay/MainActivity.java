@@ -1,9 +1,13 @@
 package com.itheima_zphuan.googleplay;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -11,6 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.ViewTreeObserver;
+import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStripExtends;
 import com.itheima_zphuan.googleplay.base.BaseFragment;
@@ -43,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         initActionBarDrawerToggle();
         initData();
         initListener();
+        requestPermission();
     }
 
     private void initActionBar() {
@@ -175,6 +181,28 @@ public class MainActivity extends AppCompatActivity {
                 return mMainTitles[position];
             }
             return super.getPageTitle(position);
+        }
+    }
+
+    /**
+     * 6.0手机->请求读写SD卡权限
+     */
+    private void requestPermission() {
+        //步骤：1 检查权限  2 没有授权：申请授权   3 处理回调
+        //1 检查权限
+        int checkSelfPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //拒绝
+        if(checkSelfPermission == PackageManager.PERMISSION_DENIED){
+            KLog.d("没有操作sd卡权限");
+            //2 申请权限(弹出一个申请权限的对话框)
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE},100);
+        }
+        //申请了权限
+        else if(checkSelfPermission == PackageManager.PERMISSION_GRANTED){
+            KLog.d("具备操作sd卡权限");
+            Toast.makeText(this, "恭喜你，手机具备操作sd卡权限", Toast.LENGTH_SHORT).show();
         }
     }
 

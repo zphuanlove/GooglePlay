@@ -14,14 +14,11 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * 
- * @author 写文件的工具类
- * 
+ * 写文件的工具类
  */
 public class FileUtils {
 
-	public static final String ROOT_DIR = "Android/data/"
-			+ UIUtils.getPackageName();
+	public static final String ROOT_DIR = "Android/data/" + UIUtils.getPackageName();
 	public static final String DOWNLOAD_DIR = "download";
 	public static final String CACHE_DIR = "cache";
 	public static final String ICON_DIR = "icon";

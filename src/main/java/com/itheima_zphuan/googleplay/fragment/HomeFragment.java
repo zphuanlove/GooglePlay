@@ -33,7 +33,7 @@ public class HomeFragment extends BaseFragment {
         /*--------------协议进行简单封装以后--------------*/
         HomeProtocol protocol = new HomeProtocol();
         try {
-            HomeBean homeBean = protocol.loadData();
+            HomeBean homeBean = protocol.loadData(0);
             LoadingPager.LoadedResult result = checkResult(homeBean);
             if (result != LoadingPager.LoadedResult.SUCCESS) {//说明homeBean有问题,homeBean==null
                 return result;
