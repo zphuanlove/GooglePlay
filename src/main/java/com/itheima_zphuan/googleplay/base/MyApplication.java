@@ -7,6 +7,9 @@ import android.os.Handler;
 
 import com.socks.library.KLog;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * author: 钟佩桓
  * date: 2017/2/26
@@ -25,6 +28,12 @@ public class MyApplication extends Application{
      * 主线程的ID
      */
     private static int mMainThreadId;
+
+    private Map<String,String> mMemProtocalCache = new HashMap<>();
+
+    public Map<String, String> getMemProtocalCache() {
+        return mMemProtocalCache;
+    }
 
     @Override
     public void onCreate() {
