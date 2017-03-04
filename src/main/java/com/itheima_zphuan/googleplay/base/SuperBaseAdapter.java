@@ -2,6 +2,8 @@ package com.itheima_zphuan.googleplay.base;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 
 import com.itheima_zphuan.googleplay.adapter.MyBaseAdapter;
 import com.itheima_zphuan.googleplay.factory.ThreadPoolProxyFactory;
@@ -14,7 +16,7 @@ import java.util.List;
  * date: 2017/3/2
  * add:上滑加载更多功能
  */
-public abstract class SuperBaseAdapter<T> extends MyBaseAdapter {
+public abstract class SuperBaseAdapter<T> extends MyBaseAdapter implements AdapterView.OnItemClickListener {
     /**
      * 加载更多
      */
@@ -29,8 +31,13 @@ public abstract class SuperBaseAdapter<T> extends MyBaseAdapter {
     private LoadMoreHolder mLoadMoreHolder;
     private LoadMoreTask mLoadMoreTask;
 
-    protected SuperBaseAdapter(List<T> dataSets) {
+    private AbsListView mAbsListView;
+    private int mState;
+
+    protected SuperBaseAdapter(List<T> dataSets,AbsListView mAbsListView) {
         super(dataSets);
+        this.mAbsListView = mAbsListView;
+        mAbsListView.setOnItemClickListener(this);
     }
 
     /**
@@ -118,12 +125,37 @@ public abstract class SuperBaseAdapter<T> extends MyBaseAdapter {
         return false;//默认没有加载更多
     }
 
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        int curViewType = getItemViewType(position);
+        if (curViewType == VIEWTYPE_LOADMORE) {
+            if (mState == LoadMoreHolder.LOADMORE_ERROR) {
+                //再次触发加载更多
+                triggerLoadMoreData();
+            }
+        } else {//点击了普通条目
+            onNormalitemClick(parent, view, position, id);
+        }
+    }
+    /**
+     * @des 普通条目的点击事件
+     * @des 在SuperBaseAdapter中不知道如何处理普通条目的点击事件, 只能交给子类
+     * @des 子类是选择性实现普通条目的点击事件
+     */
+    public void onNormalitemClick(AdapterView<?> parent, View view, int position, long id) {
+    }
+
     /**
      * 触发加载更多的数据
      */
     private void triggerLoadMoreData() {
         //异步加载
         if(mLoadMoreTask==null) {
+            //加载之前显示正在加载更多
+            int state = LoadMoreHolder.LOADMORE_LOADING;
+            mLoadMoreHolder.setDataAndRefreshHolderView(state);
+
             mLoadMoreTask = new LoadMoreTask();
             ThreadPoolProxyFactory.getNormalThreadPoolProxy().submit(mLoadMoreTask);
         }
@@ -136,32 +168,31 @@ public abstract class SuperBaseAdapter<T> extends MyBaseAdapter {
         public void run() {
             /*--------------定义刷新UI需要用到的两个值--------------*/
             List loadMoreList = null;
-            int state;
             /*--------------真正的在子线程中加载更多的数据,得到数据,处理数据--------------*/
             try {
                 loadMoreList = onLoadMore();
                 if (loadMoreList == null || loadMoreList.size() == 0) {
                     //没有更多数据可以加载了
-                    state = LoadMoreHolder.LOADMORE_NONE;
+                    mState = LoadMoreHolder.LOADMORE_NONE;
                 } else {
                     if (loadMoreList.size() == PAGESIZE) {
                         //说明还有更多数据可以加载
                         //mLoadMoreHolder显示就是正在加载更多-->用户下一次看到的就是正在加载更多
-                        state = LoadMoreHolder.LOADMORE_LOADING;
+                        mState = LoadMoreHolder.LOADMORE_LOADING;
                     } else {
                         //没有更多数据可以加载
-                        state = LoadMoreHolder.LOADMORE_NONE;
+                        mState = LoadMoreHolder.LOADMORE_NONE;
                     }
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
-                state = LoadMoreHolder.LOADMORE_ERROR;//加载更多失败
+                mState = LoadMoreHolder.LOADMORE_ERROR;//加载更多失败
             }
 
             /*--------------- 生成了两个临时变量 ---------------*/
             final List finalLoadMoreList = loadMoreList;
-            final int finalState = state;
+            final int finalState = mState;
 
              /*--------------- 具体刷新ui ---------------*/
             MyApplication.getMainThreadHandler().post(new Runnable() {

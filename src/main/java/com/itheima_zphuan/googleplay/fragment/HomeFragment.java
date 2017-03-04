@@ -2,6 +2,7 @@ package com.itheima_zphuan.googleplay.fragment;
 
 import android.os.SystemClock;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.itheima_zphuan.googleplay.base.BaseFragment;
@@ -64,7 +65,7 @@ public class HomeFragment extends BaseFragment {
         ListView listView = new ListView(UIUtils.getContext());
         //data-->mDataSets-->成员变量位置
         //data+view
-        listView.setAdapter(new HomeAdapter(mItemBeans));
+        listView.setAdapter(new HomeAdapter(mItemBeans,listView));
         return listView;
     }
 
@@ -74,8 +75,8 @@ public class HomeFragment extends BaseFragment {
      */
     class HomeAdapter extends SuperBaseAdapter<ItemBean> {
 
-        protected HomeAdapter(List<ItemBean> dataSets) {
-            super(dataSets);
+        protected HomeAdapter(List<ItemBean> dataSets, AbsListView mAbsListView) {
+            super(dataSets, mAbsListView);
         }
 
         @Override
