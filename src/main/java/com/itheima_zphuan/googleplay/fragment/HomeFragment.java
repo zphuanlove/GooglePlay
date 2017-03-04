@@ -13,6 +13,7 @@ import com.itheima_zphuan.googleplay.bean.ItemBean;
 import com.itheima_zphuan.googleplay.holder.HomeHolder;
 import com.itheima_zphuan.googleplay.protocal.HomeProtocol;
 import com.itheima_zphuan.googleplay.utils.UIUtils;
+import com.socks.library.KLog;
 
 import java.util.List;
 
@@ -90,6 +91,7 @@ public class HomeFragment extends BaseFragment {
         @Override
         public List onLoadMore() throws Exception {
             SystemClock.sleep(2000);
+            KLog.d("触发加载更多-index:"+mDataSets.size());
             HomeBean homeBean = mProtocol.loadData(mDataSets.size());
             if(homeBean!=null){
                 return homeBean.list;

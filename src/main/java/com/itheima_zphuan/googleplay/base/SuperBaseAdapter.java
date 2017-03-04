@@ -27,6 +27,7 @@ public abstract class SuperBaseAdapter<T> extends MyBaseAdapter {
      * 加载更多的holder
      */
     private LoadMoreHolder mLoadMoreHolder;
+    private LoadMoreTask mLoadMoreTask;
 
     protected SuperBaseAdapter(List<T> dataSets) {
         super(dataSets);
@@ -122,7 +123,10 @@ public abstract class SuperBaseAdapter<T> extends MyBaseAdapter {
      */
     private void triggerLoadMoreData() {
         //异步加载
-        ThreadPoolProxyFactory.getNormalThreadPoolProxy().submit(new LoadMoreTask());
+        if(mLoadMoreTask==null) {
+            mLoadMoreTask = new LoadMoreTask();
+            ThreadPoolProxyFactory.getNormalThreadPoolProxy().submit(mLoadMoreTask);
+        }
     }
 
     private static final int PAGESIZE = 20;//每页请求的总数
@@ -172,8 +176,8 @@ public abstract class SuperBaseAdapter<T> extends MyBaseAdapter {
                     mLoadMoreHolder.setDataAndRefreshHolderView(finalState);
                 }
             });
-
-
+            //代表走到run方法体的最后了,任务已经执行完成了,置空任务
+            mLoadMoreTask = null;
         }
     }
 
