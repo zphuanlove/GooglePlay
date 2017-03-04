@@ -27,12 +27,20 @@ import okhttp3.Response;
  * author: 钟佩桓
  * date: 2017/3/3
  * des:针对具体的protocol封装一个基类
+ * 入口：loadData--->加载数据
+ *
+ * 思路：
+ * 1.从内存获取数据--有-返回
+ * 2.内存没有---磁盘--有--返回---写入内存
+ * 3.磁盘没有--从网络
+ *
  */
 public abstract class BaseProtocal<T> {
 
     /**
      * 加载数据
      * 1.从内存-->返回
+     *  思考：存在哪儿--1.创建单列   2.MyApllication-map
      * 2.从磁盘-->返回,存内存
      * 3.从网络-->返回,存内存,存磁盘
      */
@@ -64,7 +72,7 @@ public abstract class BaseProtocal<T> {
     private T loadDataFromMem(int index) {
         T result;
         //找到存储结构
-        MyApplication myApplication = (MyApplication) UIUtils.getContext().getApplicationContext();
+        MyApplication myApplication = (MyApplication) UIUtils.getContext();
         Map<String, String> memProtocalCache = myApplication.getMemProtocalCache();
 
         //判断存储结构中是否有缓存
@@ -162,7 +170,7 @@ public abstract class BaseProtocal<T> {
     private File getCacheFile(int index) {
         //优先保存到外置sdcard,应用程序的缓存目录(sdcard/Android/data/包目录/json)
         String dir = FileUtils.getDir("json");
-        KLog.e("dir:" + dir);
+        KLog.e("dir:" + dir);//null
         //唯一命中的问题 interfaceKey+"."+index
         String fileName = generateKey(index);
         return new File(dir, fileName);

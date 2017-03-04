@@ -79,6 +79,11 @@ public class HomeFragment extends BaseFragment {
         public BaseHolder getSpecialBaseHolder() {
             return new HomeHolder();
         }
+
+        @Override
+        public boolean hasLoadMore() {
+            return true;
+        }
     }
 
 }

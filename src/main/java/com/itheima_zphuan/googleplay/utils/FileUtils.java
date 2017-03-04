@@ -58,7 +58,7 @@ public class FileUtils {
 		}
 		sb.append(name);
 		sb.append(File.separator);
-		String path = sb.toString();
+		String path = sb.toString();//sdcard/android/data/xxxx/json/
 		if (createDirs(path)) {
 			return path;
 		} else {
@@ -88,7 +88,7 @@ public class FileUtils {
 
 	/** 创建文件夹 */
 	public static boolean createDirs(String dirPath) {
-		File file = new File(dirPath);
+		File file = new File(dirPath);//sdcard/android/data/xxxx/json/
 		if (!file.exists() || !file.isDirectory()) {
 			return file.mkdirs();
 		}
