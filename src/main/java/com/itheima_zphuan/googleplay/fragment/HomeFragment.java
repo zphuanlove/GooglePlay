@@ -11,7 +11,7 @@ import com.itheima_zphuan.googleplay.base.LoadingPager;
 import com.itheima_zphuan.googleplay.base.SuperBaseAdapter;
 import com.itheima_zphuan.googleplay.bean.HomeBean;
 import com.itheima_zphuan.googleplay.bean.ItemBean;
-import com.itheima_zphuan.googleplay.holder.HomeHolder;
+import com.itheima_zphuan.googleplay.holder.ItemHolder;
 import com.itheima_zphuan.googleplay.protocal.HomeProtocol;
 import com.itheima_zphuan.googleplay.utils.UIUtils;
 import com.socks.library.KLog;
@@ -81,7 +81,7 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public BaseHolder getSpecialBaseHolder() {
-            return new HomeHolder();
+            return new ItemHolder();
         }
 
         @Override

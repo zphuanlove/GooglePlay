@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
  * 2.接收数据
  * 3.数据和视图的绑定
  */
-public class HomeHolder extends BaseHolder<ItemBean> {
+public class ItemHolder extends BaseHolder<ItemBean> {
 
 
     @BindView(R.id.item_appinfo_iv_icon)
