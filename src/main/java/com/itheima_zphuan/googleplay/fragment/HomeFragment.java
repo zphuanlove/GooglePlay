@@ -1,5 +1,6 @@
 package com.itheima_zphuan.googleplay.fragment;
 
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.ListView;
 
@@ -23,6 +24,7 @@ public class HomeFragment extends BaseFragment {
 
     private List<ItemBean> mItemBeans;
     private List<String> mPictures;
+    private HomeProtocol mProtocol;
 
     /**
      * @des 在子线程中真正的加载具体的数据
@@ -31,9 +33,9 @@ public class HomeFragment extends BaseFragment {
     @Override
     public LoadingPager.LoadedResult initData() {
         /*--------------协议进行简单封装以后--------------*/
-        HomeProtocol protocol = new HomeProtocol();
+        mProtocol = new HomeProtocol();
         try {
-            HomeBean homeBean = protocol.loadData(0);
+            HomeBean homeBean = mProtocol.loadData(0);
             LoadingPager.LoadedResult result = checkResult(homeBean);
             if (result != LoadingPager.LoadedResult.SUCCESS) {//说明homeBean有问题,homeBean==null
                 return result;
@@ -83,6 +85,16 @@ public class HomeFragment extends BaseFragment {
         @Override
         public boolean hasLoadMore() {
             return true;
+        }
+
+        @Override
+        public List onLoadMore() throws Exception {
+            SystemClock.sleep(2000);
+            HomeBean homeBean = mProtocol.loadData(mDataSets.size());
+            if(homeBean!=null){
+                return homeBean.list;
+            }
+            return super.onLoadMore();
         }
     }
 
