@@ -11,6 +11,7 @@ import com.itheima_zphuan.googleplay.base.LoadingPager;
 import com.itheima_zphuan.googleplay.base.SuperBaseAdapter;
 import com.itheima_zphuan.googleplay.bean.HomeBean;
 import com.itheima_zphuan.googleplay.bean.ItemBean;
+import com.itheima_zphuan.googleplay.holder.HomePicturesHolder;
 import com.itheima_zphuan.googleplay.holder.ItemHolder;
 import com.itheima_zphuan.googleplay.protocal.HomeProtocol;
 import com.itheima_zphuan.googleplay.utils.UIUtils;
@@ -64,6 +65,19 @@ public class HomeFragment extends BaseFragment {
         //view
         ListView listView = new ListView(UIUtils.getContext());
         //data-->mDataSets-->成员变量位置
+
+        // 构建轮播图的Holder
+        HomePicturesHolder homePicturesHolder = new HomePicturesHolder();
+
+        //让HomePicturesHolder接收数据,然后就行数据和视图的绑定
+        homePicturesHolder.setDataAndRefreshHolderView(mPictures);
+
+        //取出HomePicturesHolder所能提供的视图
+        View headerView  = homePicturesHolder.mHolderView;
+
+        //为listView添加一个headerView(轮播图)
+        listView.addHeaderView(headerView);
+
         //data+view
         listView.setAdapter(new HomeAdapter(mItemBeans,listView));
         return listView;
