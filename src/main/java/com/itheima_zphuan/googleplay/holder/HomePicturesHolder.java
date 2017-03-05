@@ -13,6 +13,7 @@ import com.itheima_zphuan.googleplay.base.BaseHolder;
 import com.itheima_zphuan.googleplay.base.MyApplication;
 import com.itheima_zphuan.googleplay.conf.Constants;
 import com.itheima_zphuan.googleplay.utils.UIUtils;
+import com.itheima_zphuan.googleplay.views.ChildViewPager;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -26,7 +27,7 @@ import butterknife.ButterKnife;
 public class HomePicturesHolder extends BaseHolder<List<String>> implements ViewPager.OnPageChangeListener {
 
     @BindView(R.id.item_home_picture_pager)
-    ViewPager mItemHomePicturePager;
+    ChildViewPager mItemHomePicturePager;
     @BindView(R.id.item_home_picture_container_indicator)
     LinearLayout mItemHomePictureContainerIndicator;
     private List<String> mPictureUrls;

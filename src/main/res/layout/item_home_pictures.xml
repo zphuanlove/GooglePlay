@@ -4,7 +4,7 @@
                 android:layout_height="match_parent" >
 
     <!-- 轮播图 -->
-    <android.support.v4.view.ViewPager
+    <com.itheima_zphuan.googleplay.views.ChildViewPager
         android:id="@+id/item_home_picture_pager"
         android:layout_width="match_parent"
         android:layout_height="135dp" />
