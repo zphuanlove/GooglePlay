@@ -1,16 +1,23 @@
 package com.itheima_zphuan.googleplay.fragment;
 
-import android.graphics.Color;
 import android.os.SystemClock;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.itheima_zphuan.googleplay.base.BaseFragment;
+import com.itheima_zphuan.googleplay.base.BaseHolder;
 import com.itheima_zphuan.googleplay.base.LoadingPager;
+import com.itheima_zphuan.googleplay.base.SuperBaseAdapter;
+import com.itheima_zphuan.googleplay.bean.SubjectBean;
+import com.itheima_zphuan.googleplay.factory.ListViewFactory;
+import com.itheima_zphuan.googleplay.holder.SubjectHolder;
+import com.itheima_zphuan.googleplay.protocal.SubjectProtocal;
 import com.itheima_zphuan.googleplay.utils.UIUtils;
 
-import java.util.Random;
+import java.util.List;
 
 /**
  * author: 钟佩桓
@@ -18,25 +25,58 @@ import java.util.Random;
  */
 public class SubjectFragment extends BaseFragment {
 
+    private SubjectProtocal mSubjectProtocal;
+    private List<SubjectBean> mDatas;
+
     @Override
     public LoadingPager.LoadedResult initData() {
-        SystemClock.sleep(2000);//模拟耗时的网络请求
-
-        Random random = new Random();
-        int index = random.nextInt(3);// 0  1 2
-
-        LoadingPager.LoadedResult[] loadedResults = {LoadingPager.LoadedResult.SUCCESS, LoadingPager.LoadedResult.EMPTY, LoadingPager.LoadedResult.ERROR};
-        //随机返回一种情况
-        return loadedResults[index];//数据加载完成之后的状态(成功,失败,空)return LoadingPager.LoadedResult.SUCCESS;
-
+        mSubjectProtocal = new SubjectProtocal();
+        try {
+            mDatas = mSubjectProtocal.loadData(0);
+            //校验网络请求回来的数据,返回对应的状态
+            LoadingPager.LoadedResult loadedResult = checkResult(mDatas);
+            return loadedResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return LoadingPager.LoadedResult.ERROR;
+        }
     }
 
     @Override
     public View initSuccessView() {
-        TextView tv = new TextView(UIUtils.getContext());
-        tv.setGravity(Gravity.CENTER);
-        tv.setText(this.getClass().getSimpleName());//"HomeFragment"
-        tv.setTextColor(Color.RED);
-        return tv;
+        ListView listView = ListViewFactory.createListView();
+        listView.setAdapter(new SubjectAdapter(mDatas, listView));
+        return listView;
+    }
+
+
+    private class SubjectAdapter extends SuperBaseAdapter<SubjectBean> {
+        protected SubjectAdapter(List<SubjectBean> dataSets, AbsListView mAbsListView) {
+            super(dataSets, mAbsListView);
+        }
+
+        @Override
+        public BaseHolder getSpecialBaseHolder(int position) {
+            return new SubjectHolder();
+        }
+
+        @Override
+        public boolean hasLoadMore() {
+            return true;
+        }
+
+        @Override
+        public List onLoadMore() throws Exception {
+            SystemClock.sleep(2000);
+            List<SubjectBean> subjectBeen = mSubjectProtocal.loadData(mDatas.size());
+            return subjectBeen;
+        }
+
+        @Override
+        public void onNormalitemClick(AdapterView<?> parent, View view, int position, long id) {
+            //itemBean
+            SubjectBean subjectBean = mDatas.get(position);
+            Toast.makeText(UIUtils.getContext(), subjectBean.des, Toast.LENGTH_SHORT).show();
+        }
     }
 }

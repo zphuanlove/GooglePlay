@@ -1,16 +1,21 @@
 package com.itheima_zphuan.googleplay.fragment;
 
-import android.graphics.Color;
-import android.os.SystemClock;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.AbsListView;
+import android.widget.ListView;
 
 import com.itheima_zphuan.googleplay.base.BaseFragment;
+import com.itheima_zphuan.googleplay.base.BaseHolder;
 import com.itheima_zphuan.googleplay.base.LoadingPager;
-import com.itheima_zphuan.googleplay.utils.UIUtils;
+import com.itheima_zphuan.googleplay.base.SuperBaseAdapter;
+import com.itheima_zphuan.googleplay.bean.CategoryInfoBean;
+import com.itheima_zphuan.googleplay.factory.ListViewFactory;
+import com.itheima_zphuan.googleplay.holder.CategoryNormalHolder;
+import com.itheima_zphuan.googleplay.holder.CategoryTitleHolder;
+import com.itheima_zphuan.googleplay.protocal.CategoryProtocol;
+import com.itheima_zphuan.googleplay.utils.LogUtils;
 
-import java.util.Random;
+import java.util.List;
 
 /**
  * author: 钟佩桓
@@ -18,25 +23,63 @@ import java.util.Random;
  */
 public class CategoryFragment extends BaseFragment {
 
+    private List<CategoryInfoBean> mDatas;
+
     @Override
     public LoadingPager.LoadedResult initData() {
-        SystemClock.sleep(2000);//模拟耗时的网络请求
-
-        Random random = new Random();
-        int index = random.nextInt(3);// 0  1 2
-
-        LoadingPager.LoadedResult[] loadedResults = {LoadingPager.LoadedResult.SUCCESS, LoadingPager.LoadedResult.EMPTY, LoadingPager.LoadedResult.ERROR};
-        //随机返回一种情况
-        return loadedResults[index];//数据加载完成之后的状态(成功,失败,空)return LoadingPager.LoadedResult.SUCCESS;
+        CategoryProtocol protocol = new CategoryProtocol();
+        try {
+            mDatas = protocol.loadData(0);
+            LogUtils.printList(mDatas);
+            return checkResult(mDatas);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return LoadingPager.LoadedResult.ERROR;
+        }
 
     }
 
     @Override
     public View initSuccessView() {
-        TextView tv = new TextView(UIUtils.getContext());
-        tv.setGravity(Gravity.CENTER);
-        tv.setText(this.getClass().getSimpleName());//"HomeFragment"
-        tv.setTextColor(Color.RED);
-        return tv;
+        //view
+        ListView listView = ListViewFactory.createListView();
+        //data-->成员变量
+        //data+view
+        listView.setAdapter(new CategoryAdapter(mDatas, listView));
+        return listView;
     }
+
+    class CategoryAdapter extends SuperBaseAdapter<CategoryInfoBean> {
+
+        public CategoryAdapter(List<CategoryInfoBean> dataSets, AbsListView absListView) {
+            super(dataSets, absListView);
+        }
+
+        @Override
+        public BaseHolder getSpecialBaseHolder(int position) {
+            CategoryInfoBean itemBean = mDatas.get(position);
+            if (itemBean.isTitle) {
+                return new CategoryTitleHolder();
+            } else {
+                return new CategoryNormalHolder();
+            }
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return super.getViewTypeCount()+1;
+        }
+
+        @Override
+        public int getNormalItemViewType(int position) {
+            CategoryInfoBean itemBean = mDatas.get(position);
+            if (itemBean.isTitle) {
+                return 1;
+            } else {
+                return 2;
+            }
+
+        }
+    }
+
 }

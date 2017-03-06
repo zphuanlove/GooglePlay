@@ -38,7 +38,7 @@ public class HomeFragment extends BaseFragment {
         /*--------------协议进行简单封装以后--------------*/
         mProtocol = new HomeProtocol();
         try {
-            HomeBean homeBean = mProtocol.loadData(0);
+            HomeBean homeBean = mProtocol.loadData(0);//20
             LoadingPager.LoadedResult result = checkResult(homeBean);
             if (result != LoadingPager.LoadedResult.SUCCESS) {//说明homeBean有问题,homeBean==null
                 return result;
@@ -94,7 +94,7 @@ public class HomeFragment extends BaseFragment {
         }
 
         @Override
-        public BaseHolder getSpecialBaseHolder() {
+        public BaseHolder getSpecialBaseHolder(int position) {
             return new ItemHolder();
         }
 
@@ -107,7 +107,7 @@ public class HomeFragment extends BaseFragment {
         public List onLoadMore() throws Exception {
             SystemClock.sleep(2000);
             KLog.d("触发加载更多-index:"+mDataSets.size());
-            HomeBean homeBean = mProtocol.loadData(mDataSets.size());
+            HomeBean homeBean = mProtocol.loadData(mDataSets.size());//40 60  80
             if(homeBean!=null){
                 return homeBean.list;
             }

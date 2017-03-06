@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="@drawable/list_item_bg"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <!--已知高度,动态计算宽度-->
+        <com.itheima_zphuan.googleplay.views.RatioLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:picRatio="2.43"
+            app:relative="width">
+
+            <ImageView
+                android:id="@+id/item_subject_iv_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"/>
+        </com.itheima_zphuan.googleplay.views.RatioLayout>
+
+        <TextView
+            android:id="@+id/item_subject_tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="title"/>
+    </LinearLayout>
+</FrameLayout>

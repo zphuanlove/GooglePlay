@@ -1,5 +1,6 @@
 package com.itheima_zphuan.googleplay.holder;
 
+import android.content.SharedPreferences;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
@@ -44,6 +45,9 @@ public class HomePicturesHolder extends BaseHolder<List<String>> implements View
     public View initHolderView() {
         View holderView = View.inflate(UIUtils.getContext(), R.layout.item_home_pictures, null);
         ButterKnife.bind(this, holderView);
+        SharedPreferences xxx = UIUtils.getContext().getSharedPreferences("xxx", 0);
+        SharedPreferences.Editor edit = xxx.edit();
+        edit.apply();
         return holderView;
     }
 

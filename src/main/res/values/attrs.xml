@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RatioLayout">
+        <!-- 宽高比例 -->
+        <attr name="picRatio" format="float"/>
+
+        <!-- 相对于谁进行计算 -->
+        <attr name="relative" format="enum">
+            <enum name="width" value="0"/>
+            <enum name="height" value="1"/>
+        </attr>
+    </declare-styleable>
+</resources>

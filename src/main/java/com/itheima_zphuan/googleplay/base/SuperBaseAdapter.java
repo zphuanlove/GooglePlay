@@ -57,8 +57,16 @@ public abstract class SuperBaseAdapter<T> extends MyBaseAdapter implements Adapt
         if (position == getCount() - 1) {
             return VIEWTYPE_LOADMORE;
         } else {
-            return VIEWTYPE_NORMAL;
+//            return VIEWTYPE_NORMAL;
+            return getNormalItemViewType(position);
         }
+    }
+    /**
+     * 得到普通条目的ViewType类型
+     * 子类可以覆写该方法,返回更多的普通条目的viewType类型
+     */
+    public int getNormalItemViewType(int position) {
+        return VIEWTYPE_NORMAL;//默认值是1
     }
 
     /**
@@ -80,7 +88,7 @@ public abstract class SuperBaseAdapter<T> extends MyBaseAdapter implements Adapt
             if (getItemViewType(position) == VIEWTYPE_LOADMORE) {
                 holder = getLoadMoreHolder();
             } else {
-                holder = getSpecialBaseHolder();
+                holder = getSpecialBaseHolder(position);
             }
         } else {
             holder = (BaseHolder) convertView.getTag();
@@ -108,8 +116,9 @@ public abstract class SuperBaseAdapter<T> extends MyBaseAdapter implements Adapt
     /**
      * @des 属于BaseHolder的子类对象
      * @des 加载更多的Holder的对象
+     * 子类是必须实现吗？-不是
      */
-    private LoadMoreHolder getLoadMoreHolder() {
+    public LoadMoreHolder getLoadMoreHolder() {
         if (mLoadMoreHolder == null) {
             mLoadMoreHolder = new LoadMoreHolder();
         }
@@ -228,7 +237,8 @@ public abstract class SuperBaseAdapter<T> extends MyBaseAdapter implements Adapt
      * @des 得到BaseHolder具体的子类对象
      * @des 在SuperBaseAdapter中不知道如何创建BaseHolder的子类对象, 所以只能交给子类, 子类必须实现
      * @des 必须实现, 但是不知道具体实现, 定义成为抽象方法, 交给子类具体实现
+     * @param position
      */
-    public abstract BaseHolder getSpecialBaseHolder();
+    public abstract BaseHolder getSpecialBaseHolder(int position);
 
 }
