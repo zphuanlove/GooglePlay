@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         initData();
         initListener();
         requestPermission();
+		
     }
 
     private void initActionBar() {
